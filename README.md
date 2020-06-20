@@ -10,6 +10,11 @@ npm install
 npm run serve
 ```
 
+### Compiles for development and open in browser
+```
+npm run start
+```
+
 ### Compiles and minifies for production
 ```
 npm run build

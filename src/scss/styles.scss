@@ -1,0 +1,30 @@
+@import 'variables';
+@import "~bootstrap/scss/bootstrap.scss";
+@import '~bootstrap-vue/src/index.scss';
+@import '~font-awesome/scss/font-awesome.scss';
+
+body {
+    padding: 0;
+    margin: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    font-family: Segoe UI, Helvetica Neue, Open sans, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+a {
+    cursor: pointer;
+}

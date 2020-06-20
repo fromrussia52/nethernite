@@ -1,0 +1,129 @@
+<div class="test-container">
+    <div class="spinner-grow text-dark main-loader" v-bind:class="{hidden: !isLoading}" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="input col">
+                    <input autofocus v-model="searchPackage" @input="search" class="form-control py-2" type="search"
+                        placeholder="search">
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="table-row row">
+                <div class="col">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="row">
+                                <th class="col-1">#</th>
+                                <th class="col-5">Пакет</th>
+                                <th class="col-sm-4 col-6">Автор</th>
+                                <th class="col-2 d-none d-sm-block">Дата</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row table-row--pointer" v-for="(pack, index) in packages" :key="index"
+                                @click="showModal(index)">
+                                <th class="col-1">{{(index + 1) + ((page - 1) * limit)}}</th>
+                                <td class="col-5">{{pack.name}}</td>
+                                <td class="col-sm-4 col-6">{{pack.author}}</td>
+                                <td class="col-2 d-none d-sm-block">{{performDate(pack.date)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="pagination-row row">
+                <div class="col-12">
+                    <nav aria-label="navigation">
+                        <ul class="pagination justify-content-center pagination-sm">
+                            <li class="page-item" v-bind:class="{disabled: page === 1}">
+                                <a @click="firstPage()" class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&#171;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" v-bind:class="{disabled: page === 1}">
+                                <a @click="prevPage()" class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&#060;</span>
+                                </a>
+                            </li>
+                            <li v-if="page > 3" class="page-item disabled">
+                                <a class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&#133;</span>
+                                </a>
+                            </li>
+                            <template v-for="number in aNumberOfPages">
+                                <li v-if="number >= page && number < (page + 3) || (page + 3 > numberOfPages &&  number + 3 > numberOfPages)"
+                                    class="page-item" :class="{active: page === number}">
+                                    <a @click="goToPage(number)" class="page-link">{{number}}</a>
+                                </li>
+                            </template>
+                            <li v-if="page <= numberOfPages - 3" class="page-item disabled">
+                                <a class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&#133;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" v-bind:class="{disabled: page === numberOfPages}">
+                                <a @click="nextPage()" class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">&#062;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" v-bind:class="{disabled: page === numberOfPages}">
+                                <a @click="lastPage()" class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">&#187;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-12">
+                    <div class="form-group row justify-content-center align-items-center">
+                        <label for="inputNumber" class="col-auto col-form-label">Страница</label>
+                        <div class="col-auto">
+                            <input :value="page" @change="goToPage($event.target.value)" type="number" :min="1"
+                                :max="numberOfPages || 1" class="form-control text-center" id="inputNumber">
+                        </div>
+                        <div class="col-auto">из {{numberOfPages}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="footer-text col-md text-center">
+                    Автор: <a target="_blank" href="https://hh.ru/resume/f42b8f9bff072e45640039ed1f7234464e4b61">Юлин
+                        Юрий</a>
+                </div>
+                <div class="footer-text col-md text-center">
+                    Старые примеры на <a target="_blank" href="https://github.com/fromrussia52">github</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <b-modal id="modal" centered scrollable :title="modalTitle">
+        <template v-if="activePackageRaw">
+            <table class="table table-striped">
+                <tbody>
+                    <tr v-for="(packValue, packKey) in activePackageRaw.package" :key="packKey">
+                        <td>{{packKey}}</td>
+                        <td>{{packValue}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
+        <template v-slot:modal-footer>
+            <div class="w-100">
+                <b-button variant="primary" size="sm" class="float-right" @click="$bvModal.hide('modal')">
+                    ОК
+                </b-button>
+            </div>
+        </template>
+    </b-modal>
+</div>
